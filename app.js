@@ -1,9 +1,6 @@
 const express = require('express');
 const Firebird = require('node-firebird');
 const cors = require('cors');
-
-const express = require('express');
-const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
