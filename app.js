@@ -1,16 +1,17 @@
 const express = require('express');
 const Firebird = require('node-firebird');
-const cors = require("cors");
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
 
 
 app.use(cors({
-  origin: 'https://julio-g-marrero.github.io', // Permitir todos los orígenes (puedes restringir esto si es necesario)
+  origin: '*', // Permite solicitudes de cualquier dominio
   methods: ["GET", "POST", "PATCH", "DELETE"], // Métodos permitidos
   allowedHeaders: ["Content-Type", "Authorization"], // Encabezados permitidos
 }));
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
@@ -26,6 +27,8 @@ const options = {
     user: 'SYSDBA',              // Usuario de Firebird
     password: 'masterkey',       // Contraseña de Firebird
 };
+
+app.options('*', cors());
 
 // Ruta para obtener la lista de tablas
 app.get('/tablas', (req, res) => {
