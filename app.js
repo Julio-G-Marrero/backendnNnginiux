@@ -7,7 +7,7 @@ const PORT = 3000;
 
 
 app.use(cors({
-  origin: '*', // Permitir todos los orígenes (puedes restringir esto si es necesario)
+  origin: 'https://julio-g-marrero.github.io', // Permitir todos los orígenes (puedes restringir esto si es necesario)
   methods: ["GET", "POST", "PATCH", "DELETE"], // Métodos permitidos
   allowedHeaders: ["Content-Type", "Authorization"], // Encabezados permitidos
 }));
