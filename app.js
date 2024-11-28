@@ -193,3 +193,8 @@ app.get('/nomina', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+app.use((req, res, next) => {
+  console.log(`Ruta solicitada: ${req.method} ${req.url}`);
+  next(); // Llama al siguiente middleware o ruta
+});
