@@ -7,9 +7,17 @@ const PORT = 3000;
 
 
 app.use(cors({
-  origin: '*',
-  methods:["GET","POST","PATCH","DELETE"]
+  origin: '*', // Permitir todos los orígenes (puedes restringir esto si es necesario)
+  methods: ["GET", "POST", "PATCH", "DELETE"], // Métodos permitidos
+  allowedHeaders: ["Content-Type", "Authorization"], // Encabezados permitidos
 }));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 
 const options = {
     host: 'niux.servehttp.com',  // Dirección IP o hostname de Firebird
