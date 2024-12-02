@@ -134,35 +134,10 @@ app.get('/ordenes/:noOrden', (req, res) => {
   });
 });
 
-// Ruta para obtener los registros de la tabla FACTURADOS
-app.get('/refacciones', (req, res) => {
-    Firebird.attach(options, function(err, db) {
-      if (err) {
-        console.error('Error al conectar con la base de datos:', err);
-        return res.status(500).json({ error: 'Error de conexión a la base de datos' });
-      }
-  
-      // Consulta para obtener los registros de la tabla FACTURADOS
-      const query = 'SELECT * FROM REFACCIONES';
-  
-      db.query(query, [], function(err, result) {
-        if (err) {
-          console.error('Error al ejecutar la consulta:', err);
-          db.detach();
-          return res.status(500).json({ error: 'Error al ejecutar la consulta' });
-        }
-  
-        // Devuelve el resultado de los registros
-        res.json({ registros: result });
-  
-        // Cierra la conexión
-        db.detach();
-      });
-    });
-});
+
 
 app.get('/nomina', (req, res) => {
-  const noPeriodo = req.query.noPeriodo; // Toma el valor de NO_PERIODO desde el query parameter
+  const tabla = req.query.noPeriodo; // Toma el valor de NO_PERIODO desde el query parameter
 
   if (!noPeriodo) {
     return res.status(400).json({ error: 'El parámetro "noPeriodo" es obligatorio' });
@@ -189,6 +164,67 @@ app.get('/nomina', (req, res) => {
     });
   });
 });
+
+// Ruta para obtener los registros de la tabla FACTURADOS
+app.get('/refacciones', (req, res) => {
+  Firebird.attach(options, function(err, db) {
+    if (err) {
+      console.error('Error al conectar con la base de datos:', err);
+      return res.status(500).json({ error: 'Error de conexión a la base de datos' });
+    }
+
+    // Consulta para obtener los registros de la tabla FACTURADOS
+    const query = 'SELECT * FROM REFACCIONES';
+
+    db.query(query, [], function(err, result) {
+      if (err) {
+        console.error('Error al ejecutar la consulta:', err);
+        db.detach();
+        return res.status(500).json({ error: 'Error al ejecutar la consulta' });
+      }
+
+      // Devuelve el resultado de los registros
+      res.json({ registros: result });
+
+      // Cierra la conexión
+      db.detach();
+    });
+  });
+});
+
+app.get('/tabla/:tabla', (req, res) => {
+  const tabla = req.params.tabla;
+
+  if (!tabla) {
+    return res.status(400).json({ error: 'El parámetro "tabla" es obligatorio' });
+  }
+
+  // Conectar a la base de datos
+  Firebird.attach(options, (err, db) => {
+    if (err) {
+      console.error('Error al conectar a la base de datos:', err);
+      return res.status(500).json({ error: 'Error al conectar a la base de datos' });
+    }
+
+    // Consulta para obtener los registros de la tabla FACTURADOS
+    const query = `SELECT * FROM ${tabla}`;
+
+    db.query(query, [], function(err, result) {
+      if (err) {
+        console.error('Error al ejecutar la consulta:', err);
+        db.detach();
+        return res.status(500).json({ error: 'Error al ejecutar la consulta' });
+      }
+
+      // Devuelve el resultado de los registros
+      res.json({ registros: result });
+
+      // Cierra la conexión
+      db.detach();
+    });
+  });
+});
+
 // Inicia el servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
